@@ -51,8 +51,8 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Map", leafletOutput("map")),
-        tabPanel("Bar Plot", plotOutput("bar_plot")),
-        tabPanel("Line Plot", plotOutput("line_plot")),
+        tabPanel("Abundant Species", plotOutput("bar_plot")),
+        tabPanel("Species by Class", plotOutput("line_plot")),
         tabPanel("Scatter Plot", plotOutput("scatter_plot"))
       )
     )
