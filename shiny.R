@@ -7,105 +7,108 @@
 library(shiny)
 library(leaflet)
 library(ggplot2)
-library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(shiny)
+library(leaflet)
+library(ggplot2)
+library(dplyr)
 
-# Define UI ----
+# Load mollusc data
+mollusc_data <- read.csv("full_data_amalgimated_data_analysis.csv", header = TRUE) %>%
+  separate(date, into = c('month', 'day', 'year'), sep = " ", remove = FALSE) %>%
+  mutate(across(everything(),
+                ~str_replace_all(., "[^[:alnum:]///' ]", ""))) %>%
+  drop_na(year) %>%
+  mutate(year = as.factor(year))
+  
+# Load location data
+location_data <- read_csv("locations.csv")
+
+# Define UI
 ui <- fluidPage(
   
-  # App title ----
-  titlePanel("The Merilees Micromollusc Collection"),
+  # Set page title
+  titlePanel("Merilees MicroMollusc Collection Analysis"),
   
-  # Sidebar layout with input and output definitions ----
+  # Define sidebar
   sidebarLayout(
-    
-    # Sidebar panel for inputs ----
     sidebarPanel(
       
-      # Select region of interest ----
-      selectInput(inputId = "region",
-                  label = "Select a region:",
-                  choices = c("Vancouver Island", "Gulf Islands", "Sunshine Coast"),
-                  selected = "Vancouver Island"),
+      # Add input widgets for filtering data
+      selectInput("region", "Select Region", unique(mollusc_data$region)),
+      selectInput("year", "Select Year", unique(mollusc_data$year)),
       
-      # Select year of interest ----
-      sliderInput(inputId = "year",
-                  label = "Select a year:",
-                  min = 2010, max = 2017, value = 2010, step = 1),
-      
-      # Select tide height of interest ----
-      sliderInput(inputId = "tide",
-                  label = "Select a tide height:",
-                  min = 0, max = 4, value = 0, step = 0.1),
-      
-      # Select mollusc family of interest ----
-      selectInput(inputId = "family",
-                  label = "Select a mollusc family:",
-                  choices = unique(mollusc_data$family),
-                  selected = "Nuculidae"),
-      
-      # Select number of species to display ----
-      numericInput(inputId = "num_species",
-                   label = "Number of species to display:",
-                   value = 10)
-      
+      # Add action button for updating the map and graphs
+      actionButton("update_button", "Update")
     ),
     
-    # Main panel for displaying output ----
+    # Define main panel with output elements
     mainPanel(
-      
-      # Map of collection sites ----
-      leafletOutput("map", height = "500px"),
-      
-      # Bar plot of species by year ----
-      plotOutput("species_by_year"),
-      
-      # Histogram of tide heights ----
-      plotOutput("tide_histogram"),
-      
-      # Pie chart of family composition ----
-      plotOutput("family_pie_chart")
-      
+      tabsetPanel(
+        tabPanel("Map", leafletOutput("map")),
+        tabPanel("Bar Plot", plotOutput("bar_plot")),
+        tabPanel("Line Plot", plotOutput("line_plot")),
+        tabPanel("Scatter Plot", plotOutput("scatter_plot"))
+      )
     )
   )
 )
 
-# Define server logic ----
-server <- function(input, output) {
+# Define server
+server <- function(input, output, session) {
   
-  # Filter data based on user inputs ----
-  mollusc_data_filtered <- reactive({
+  # Create reactive data filtered by user input
+  filtered_data <- reactive({
     mollusc_data %>%
       filter(region == input$region,
-             year == input$year,
-             tide_height >= input$tide,
-             family == input$family) %>%
-      group_by(species) %>%
-      summarize(n = n()) %>%
-      top_n(input$num_species, n)
+             year == input$year)
   })
   
-  # Create map of collection sites ----
+  # Render leaflet map
   output$map <- renderLeaflet({
-    leaflet(mollusc_data_filtered()) %>%
+    leaflet(data = location_data) %>%
       addTiles() %>%
-      addMarkers(lat = ~lat, lng = ~long, popup = ~species)
+      addMarkers(lng = ~long,
+                 lat = ~lat, 
+                 popup = ~paste(region, ": ", species_count, " species"))
   })
   
-  # Create bar plot of species by year ----
-  output$species_by_year <- renderPlot({
-    ggplot(mollusc_data_filtered(), aes(x = year, y = n)) +
-      geom_bar(stat = "identity") +
-      labs(x = "Year", y = "Number of Species", title = "Mollusc Species by Year")
+  
+  # Render bar plot
+  output$bar_plot <- renderPlot({
+    reactive <- filtered_data()
+    reactive %>%
+      group_by(genus) %>%
+      mutate(number = as.numeric(number)) %>%
+      summarize(count = sum(number)) %>%
+      arrange(desc(count)) %>%
+      slice(1:10) %>%
+      mutate(genus = fct_reorder(genus, desc(count))) %>%
+      ggplot(aes(x = genus, y = count)) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      ggtitle("10 Most Common Genuses") +
+      xlab("Genus") +
+      ylab("Number Collected")
+  })
+
+  
+
+  # Render line plot
+  output$line_plot <- renderPlot({
+    ggplot(data = filtered_data(), aes(x = year, y = number)) +
+      geom_line() +
+      labs(x = "Year", y = "Number Collected")
   })
   
-  # Create histogram of tide heights ----
-  output$tide_histogram <- renderPlot({
-    ggplot(mollusc_data_filtered(), aes(x = tide_height)) +
-      geom_histogram(binwidth = 0.1) +
-      labs(x = "Tide Height", y = "Frequency", title = "Tide Height Distribution")
+  # Render scatter plot
+  output$scatter_plot <- renderPlot({
+    ggplot(data = filtered_data(), aes(x = tide_height, y = number_collected)) +
+      geom_point() +
+      labs(x = "Tide Height", y = "Number Collected")
   })
   
-  # Create pie chart of family composition ----
-  output$family_pie_chart <- renderPlot({
-    ggplot(m
-           
+}
+
+# Run app
+shinyApp(ui = ui, server = server)
