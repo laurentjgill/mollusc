@@ -29,7 +29,7 @@ location_data <- read_csv("locations.csv")
 ui <- fluidPage(
   
   # Set page title
-  titlePanel("Merilees MicroMollusc Collection Analysis"),
+  titlePanel("Merilees MicroMollusc Collection Analysis (Work in Progress)"),
   
   # Define sidebar
   sidebarLayout(
@@ -87,9 +87,9 @@ server <- function(input, output, session) {
       mutate(genus = fct_reorder(genus, desc(count))) %>%
       ggplot(aes(x = genus, y = count)) +
       geom_bar(stat = "identity", fill = "steelblue") +
-      ggtitle("10 Most Common Genuses") +
       xlab("Genus") +
-      ylab("Number Collected")
+      ylab("Number of individuals Collected") +
+      theme_bw
   })
 
   
