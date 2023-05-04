@@ -7,11 +7,7 @@
 library(shiny)
 library(leaflet)
 library(ggplot2)
-library(tidyr)
-library(dplyr)
-library(shiny)
-library(leaflet)
-library(ggplot2)
+library(tidyverse)
 library(dplyr)
 
 # Load mollusc data
@@ -91,8 +87,6 @@ server <- function(input, output, session) {
       ylab("Number of individuals Collected") +
       theme_bw
   })
-
-  
 
   # Render line plot
   output$line_plot <- renderPlot({
