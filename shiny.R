@@ -15,11 +15,17 @@ mollusc_data <- read.csv("full_data_amalgimated_data_analysis.csv", header = TRU
   separate(date, into = c('month', 'day', 'year'), sep = " ", remove = FALSE) %>%
   mutate(across(everything(),
                 ~str_replace_all(., "[^[:alnum:]///' ]", ""))) %>%
+  mutate_all(na_if,"") %>%
   drop_na(year) %>%
   mutate(year = as.factor(year))
   
 # Load location data
 location_data <- read_csv("locations.csv")
+
+#choice list for year
+choise_list=list("2012" = "2012", "2013" = "2013","2014" = "2014", "2015" = "2015",
+                 "2016" = "2016", "2017" = "2017", "2018" = "2018","2019" = "2019",
+                 "2020" = "2020")
 
 # Define UI
 ui <- fluidPage(
@@ -33,7 +39,9 @@ ui <- fluidPage(
       
       # Add input widgets for filtering data
       selectInput("region", "Select Region", unique(mollusc_data$region)),
-      selectInput("year", "Select Year", unique(mollusc_data$year)),
+      checkboxGroupInput("year", "Select Year", unique(mollusc_data$year),
+                         choices = choise_list,
+                         selected = choise_list),
       
       # Add action button for updating the map and graphs
       actionButton("update_button", "Update")
@@ -85,14 +93,26 @@ server <- function(input, output, session) {
       geom_bar(stat = "identity", fill = "steelblue") +
       xlab("Genus") +
       ylab("Number of individuals Collected") +
-      theme_bw
+      theme_bw()
   })
 
   # Render line plot
   output$line_plot <- renderPlot({
-    ggplot(data = filtered_data(), aes(x = year, y = number)) +
-      geom_line() +
-      labs(x = "Year", y = "Number Collected")
+    reactive <- filtered_data()
+    reactive %>%
+      select(date, number, class) %>%
+      rename(species_number = number) %>%
+      separate(date, into = c('month', 'day', 'year'), sep = " ") %>%
+      mutate(across(everything(),
+                    ~str_replace_all(., "[^[:alnum:]///' ]", ""))) %>%
+      mutate(year = as.factor(year),
+             species_number = as.numeric(species_number)) %>%
+      group_by(class, year) %>%
+      summarize(species_number = sum(species_number, na.rm = TRUE)) %>%
+      ggplot(aes(x = year, y = species_number, fill = class)) +
+      geom_bar(stat = "identity") +
+      labs(x = "Year", y = "Number of Animals Collected", fill = "Class") +
+      theme_minimal()
   })
   
   # Render scatter plot
