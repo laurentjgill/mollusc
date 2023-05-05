@@ -17,7 +17,6 @@ mollusc_data <- read.csv("full_data_amalgimated_data_analysis.csv", header = TRU
   mutate(across(everything(),
                 ~str_replace_all(., "[^[:alnum:]///' ]", ""))) %>%
   mutate_all(na_if,"") %>%
-  drop_na(year) %>%
   mutate(year = as.factor(year))
   
 # Load location data
@@ -53,7 +52,7 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Map", leafletOutput("map")),
-        tabPanel("Abundant Species", plotOutput("bar_plot")),
+        tabPanel("Abundant Genuses", plotOutput("bar_plot")),
         tabPanel("Species by Class", plotOutput("line_plot")),
         tabPanel("Methods Used", plotOutput("scatter_plot")),
         tabPanel("About the Data", textOutput("text"))
