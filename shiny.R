@@ -5,6 +5,7 @@
 
 #Loading libraries
 library(shiny)
+library(shinythemes)
 library(leaflet)
 library(ggplot2)
 library(tidyverse)
@@ -29,7 +30,8 @@ choise_list=list("2012" = "2012", "2013" = "2013","2014" = "2014", "2015" = "201
 
 # Define UI
 ui <- fluidPage(
-  
+  #set the theme
+  theme = shinytheme("cerulean"),
   # Set page title
   titlePanel("Merilees MicroMollusc Collection Analysis (Work in Progress)"),
   
@@ -53,7 +55,8 @@ ui <- fluidPage(
         tabPanel("Map", leafletOutput("map")),
         tabPanel("Abundant Species", plotOutput("bar_plot")),
         tabPanel("Species by Class", plotOutput("line_plot")),
-        tabPanel("Scatter Plot", plotOutput("scatter_plot"))
+        tabPanel("Methods Used", plotOutput("scatter_plot")),
+        tabPanel("About the Data", textOutput("text"))
       )
     )
   )
@@ -115,13 +118,22 @@ server <- function(input, output, session) {
       theme_minimal()
   })
   
-  # Render scatter plot
+  # Render pie plot
   output$scatter_plot <- renderPlot({
-    ggplot(data = filtered_data(), aes(x = tide_height, y = number_collected)) +
-      geom_point() +
-      labs(x = "Tide Height", y = "Number Collected")
+    reactive <- filtered_data()
+    reactive %>%
+      group_by(methods) %>%
+      summarize(count = n()) %>%
+      ggplot(aes(x="", y=count, fill=methods)) +
+      geom_bar(stat="identity", width=1, color="white") +
+      coord_polar("y", start=0) +
+      theme_void()
   })
   
+  # Render text
+  output$text <- renderPrint({
+    cat("This dataset contains intertidal mollusc data collected by Bill Merilees over 5 years in 27 different regions of British Columbia. A map is provided to visualize the collection locations, and graphs are included to display species abundance and the methods used to collect the data. The collections are now housed at the Beaty Biodiversity Museum in Vancouver, British Columbia, Canada. Use the input controls to explore the data for each region. Data analysis and R Shiny App created by Lauren Gill")
+  })
 }
 
 # Run app
