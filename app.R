@@ -143,7 +143,7 @@ server <- function(input, output, session) {
   
   # Render text
   output$text <- renderPrint({
-    cat("This dataset contains intertidal mollusc data collected by Bill Merilees over 5 years in 27 different regions of British Columbia. A map is provided to visualize the collection locations, and graphs are included to display species abundance and the methods used to collect the data. The collections are now housed at the Beaty Biodiversity Museum in Vancouver, British Columbia, Canada. Use the input controls to explore the data for each region. Data analysis and R Shiny App created by Lauren Gill")
+    cat("This dataset contains intertidal mollusc data collected by Bill Merilees from 2012-2020 in different regions of British Columbia and Washington. A map is provided to visualize the collection locations, and graphs are included to display species abundance and the methods used to collect the data. The collections are now housed at the Beaty Biodiversity Museum in Vancouver, British Columbia, Canada. Use the input controls to explore the data for each region. Data analysis and R Shiny App created by Lauren Gill")
   })
   
   #Rende photo for home page
