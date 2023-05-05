@@ -28,9 +28,21 @@ choise_list=list("2012" = "2012", "2013" = "2013","2014" = "2014", "2015" = "201
                  "2020" = "2020")
 
 # Define UI
-ui <- fluidPage(
+
+ui <- navbarPage(
   #set the theme
   theme = shinytheme("cerulean"),
+  title = "My App",
+  # Home page with a link to the app
+  tabPanel(
+    "Home",
+    imageOutput("home_img"),
+    br(),
+    p("Welcome to my app!")
+  ),
+  # App tab
+  tabPanel(
+    "My App",
   # Set page title
   titlePanel("Merilees MicroMollusc Collection Analysis (Work in Progress)"),
   
@@ -59,7 +71,7 @@ ui <- fluidPage(
       )
     )
   )
-)
+))
 
 # Define server
 server <- function(input, output, session) {
@@ -133,6 +145,15 @@ server <- function(input, output, session) {
   output$text <- renderPrint({
     cat("This dataset contains intertidal mollusc data collected by Bill Merilees over 5 years in 27 different regions of British Columbia. A map is provided to visualize the collection locations, and graphs are included to display species abundance and the methods used to collect the data. The collections are now housed at the Beaty Biodiversity Museum in Vancouver, British Columbia, Canada. Use the input controls to explore the data for each region. Data analysis and R Shiny App created by Lauren Gill")
   })
+  
+  #Rende photo for home page
+  output$home_img <- renderImage({
+    
+    list(src = "www/header.png",
+         width = "100%",
+         height = 330)
+    
+  }, deleteFile = F)
 }
 
 # Run app
