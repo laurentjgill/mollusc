@@ -32,17 +32,17 @@ choise_list=list("2012" = "2012", "2013" = "2013","2014" = "2014", "2015" = "201
 ui <- navbarPage(
   #set the theme
   theme = shinytheme("cerulean"),
-  title = "My App",
+  title = "App",
   # Home page with a link to the app
   tabPanel(
     "Home",
     imageOutput("home_img"),
     br(),
-    p("Welcome to my app!")
+    p("Welcome - click on the Data tab to explore")
   ),
   # App tab
   tabPanel(
-    "My App",
+    "The Data",
   # Set page title
   titlePanel("Merilees MicroMollusc Collection Analysis (Work in Progress)"),
   
