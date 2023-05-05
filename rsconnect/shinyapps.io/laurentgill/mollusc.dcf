@@ -5,7 +5,7 @@ account: laurentgill
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 9040004
-bundleId: 7179930
+bundleId: 7180127
 url: https://laurentgill.shinyapps.io/mollusc/
-when: 1683314863.9438
-lastSyncTime: 1683314863.94383
+when: 1683317579.93297
+lastSyncTime: 1683317579.93298
