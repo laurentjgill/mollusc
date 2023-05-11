@@ -12,7 +12,7 @@ library(tidyverse)
 library(dplyr)
 
 # Load mollusc data
-mollusc_data <- read.csv("full_data_amalgimated_data_analysis.csv", header = TRUE) %>%
+mollusc_data <- read.csv("full_data_amalgimated_data_analysis_1.csv", header = TRUE) %>%
   separate(date, into = c('month', 'day', 'year'), sep = " ", remove = FALSE) %>%
   mutate(across(everything(),
                 ~str_replace_all(., "[^[:alnum:]///' ]", ""))) %>%
@@ -23,7 +23,7 @@ mollusc_data <- read.csv("full_data_amalgimated_data_analysis.csv", header = TRU
 location_data <- read_csv("locations.csv")
 
 #choice list for year
-choise_list=list("2012" = "2012", "2013" = "2013","2014" = "2014", "2015" = "2015",
+choise_list=list("2009" = "2009", "2010" = "2010", "2011" = "2011", "2012" = "2012", "2013" = "2013","2014" = "2014", "2015" = "2015",
                  "2016" = "2016", "2017" = "2017", "2018" = "2018","2019" = "2019",
                  "2020" = "2020")
 
@@ -158,3 +158,6 @@ server <- function(input, output, session) {
 
 # Run app
 shinyApp(ui = ui, server = server)
+
+# Deploy the app
+#rsconnect::deployApp()

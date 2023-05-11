@@ -1,32 +1,32 @@
-﻿region,lat,long,species_count,,
-Bamfield,48.8286,-125.1331,59,,
-Broken Group Islands,48.886124,-125.376411,,,
-Bunsby Islands,50.109546,-127.499099,61,,
-Campbell River,50.0232,-125.2495,33,,
-Chemainus,48.9167,-123.7,14,,
-Delta,49.0847,-123.0586,7,,
-Denman Island,49.539319,-124.796429,12,,
-Gabriola Island,49.1599,-123.7896,70,,
-Haida Gwaii,53.351257,-132.268793,74,,
-Haro Strait,48.511023,-123.337318,13,,
-Kelsey Bay,49.9872,-125.4147,13,,
-Kyuquot,50.0333,-127.3667,39,,
-Ladysmith,48.9926,-123.8164,47,,
-Long Beach,46.435304,-124.011691,1,,
-Menzie’s Bay,50.138227,-125.390968,12,,
-Mitlenatch Island,49.948962,-124.999731,30,,
-Nanaimo,49.1642,-123.9364,58,,
-Oyster Bay,48.996237,-123.815521,11,,
-Pender Island,48.771542,-123.264076,10,,
-Port Alberni,49.2347,-124.8076,1,,
-Port Hardy,50.7225,-127.4928,47,,
-Port Neville,50.49266,-126.08573,38,,
-Queen Charlotte Sound,51.832324,-129.172127,22,,
-Saltspring Island,48.79303,-123.481176,25,,
-Sea Island,49.210496,-123.18841,1,,
-Sooke,48.335978,-123.612876,5,,
-Thetis Island,48.99362,-123.677446,12,,
-Tofino,49.1453,-125.8914,68,,
-Ucluelet,48.935,-125.5419,98,,
-Victoria,48.4275,-123.3673,27,,
-,,,,,
+﻿region,lat,long,species_count
+Bamfield,48.8286,-125.1331,76
+Broken Group Islands,48.886124,-125.376411,3
+Bunsby Islands,50.109546,-127.499099,61
+Campbell River,50.0232,-125.2495,33
+Chemainus,48.9167,-123.7,14
+Delta,49.0847,-123.0586,7
+Denman Island,49.539319,-124.796429,12
+Fort Rupert,50.699161,-127.421332,45
+Gabriola Island,49.1599,-123.7896,70
+Haida Gwaii,53.351257,-132.268793,118
+Haro Strait,48.511023,-123.337318,13
+Kelsey Bay,49.9872,-125.4147,13
+Kyuquot,50.0333,-127.3667,58
+Ladysmith,48.9926,-123.8164,47
+Long Beach,46.435304,-124.011691,1
+Menzie’s Bay,50.138227,-125.390968,12
+Mitlenatch Island,49.948962,-124.999731,30
+Nanaimo,49.1642,-123.9364,61
+Oyster Bay,48.996237,-123.815521,11
+Pender Island,48.771542,-123.264076,19
+Port Alberni,49.2347,-124.8076,1
+Port Hardy,50.7225,-127.4928,47
+Port Neville,50.49266,-126.08573,38
+Queen Charlotte Sound,51.832324,-129.172127,22
+Saltspring Island,48.79303,-123.481176,25
+Sea Island,49.210496,-123.18841,1
+Sooke,48.335978,-123.612876,29
+Thetis Island,48.99362,-123.677446,12
+Tofino,49.1453,-125.8914,68
+Ucluelet,48.935,-125.5419,100
+Victoria,48.4275,-123.3673,27
